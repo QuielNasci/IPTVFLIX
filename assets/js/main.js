@@ -20,8 +20,7 @@ const RANGE = `${SHEET_NAME}!A2:D`;
 
 // Função de login
 async function login(email, senha) {
-  const res = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/{SHEET_ID}/values/{RANGE}:append?valueInputOption=USER_ENTERED&key={API_KEY}
-`);
+  const res = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`);
   const data = await res.json();
 
   if (!data.values) {
@@ -41,49 +40,71 @@ async function login(email, senha) {
 
 // Função de cadastro
 async function cadastrar(nome, email, senha, telefone) {
-  const endpoint = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}!A2:D2:append?valueInputOption=USER_ENTERED&key=${API_KEY}`;
-  
+  if (!nome || !email || !senha || !telefone) {
+    alert("Todos os campos são obrigatórios.");
+    return;
+  }
+
+  const endpoint = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}!A2:D:append?valueInputOption=USER_ENTERED&key=${API_KEY}`;
+
   const body = {
-    values: [[nome, email, senha, telefone]],
+    values: [[nome, email, senha, telefone]],  // Dados que serão inseridos na planilha
   };
 
-  const res = await fetch(endpoint, {
-    method: "POST",
-    body: JSON.stringify(body),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  try {
+    // Exibe o que está sendo enviado
+    console.log("Enviando dados para o Google Sheets:", body);
 
-  if (res.ok) {
-    alert("Cadastro realizado com sucesso!");
-    window.location.href = "login.html";
-  } else {
-    alert("Erro ao cadastrar. Verifique sua conexão ou permissões.");
+    const res = await fetch(endpoint, {
+      method: "POST",
+      body: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    // Verificar a resposta da requisição
+    if (res.ok) {
+      const result = await res.json();
+      console.log("Cadastro realizado com sucesso:", result);
+      alert("Cadastro realizado com sucesso!");
+      window.location.href = "login.html";  // Redireciona para a página de login após o cadastro
+    } else {
+      // Exibe a mensagem de erro do Google Sheets
+      const errorData = await res.json();
+      console.error("Erro ao cadastrar:", errorData);
+      alert(`Erro ao cadastrar: ${errorData.error.message}`);
+    }
+  } catch (error) {
+    console.error("Erro na requisição:", error);
+    alert("Erro inesperado ao cadastrar. Tente novamente mais tarde.");
   }
 }
 
-// Interações com formulários
+// Adicionando a prevenção do comportamento padrão no envio do formulário:
 document.addEventListener("DOMContentLoaded", () => {
   const loginForm = document.querySelector("#loginForm");
   const cadastroForm = document.querySelector("#cadastroForm");
 
+  // Event listener para o formulário de login
   if (loginForm) {
     loginForm.addEventListener("submit", (e) => {
-      e.preventDefault();
+      e.preventDefault();  // Previne o comportamento padrão de envio do formulário
       const email = loginForm.email.value;
       const senha = loginForm.senha.value;
       login(email, senha);
     });
   }
 
+  // Event listener para o formulário de cadastro
   if (cadastroForm) {
     cadastroForm.addEventListener("submit", (e) => {
-      e.preventDefault();
+      e.preventDefault();  // Previne o comportamento padrão de envio do formulário
       const nome = cadastroForm.nome.value;
       const email = cadastroForm.email.value;
       const senha = cadastroForm.senha.value;
       const telefone = cadastroForm.telefone.value;
+      
       cadastrar(nome, email, senha, telefone);
     });
   }
