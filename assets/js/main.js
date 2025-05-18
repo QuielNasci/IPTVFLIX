@@ -40,10 +40,15 @@ async function login(email, senha) {
 
 // Função de cadastro
 async function cadastrar(nome, email, senha, telefone) {
-  const endpoint = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}!A2:D2:append?valueInputOption=USER_ENTERED&key=${API_KEY}`;
-  
+  if (!nome || !email || !senha || !telefone) {
+    alert("Todos os campos são obrigatórios.");
+    return;
+  }
+
+  const endpoint = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}!A2:D:append?valueInputOption=USER_ENTERED&key=${API_KEY}`;
+
   const body = {
-    values: [[nome, email, senha, telefone]],
+    values: [[nome, email, senha, telefone]],  // Dados que serão inseridos na planilha
   };
 
   const res = await fetch(endpoint, {
@@ -56,11 +61,13 @@ async function cadastrar(nome, email, senha, telefone) {
 
   if (res.ok) {
     alert("Cadastro realizado com sucesso!");
-    window.location.href = "login.html";
+    window.location.href = "login.html";  // Redireciona para a página de login após o cadastro
   } else {
-    alert("Erro ao cadastrar. Verifique sua conexão ou permissões.");
+    const errorData = await res.json();
+    alert(`Erro ao cadastrar. Mensagem: ${errorData.error.message}`);
   }
 }
+
 
 // Interações com formulários
 document.addEventListener("DOMContentLoaded", () => {
