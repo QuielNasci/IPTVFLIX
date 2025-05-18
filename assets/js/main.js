@@ -20,7 +20,8 @@ const RANGE = `${SHEET_NAME}!A2:D`;
 
 // Função de login
 async function login(email, senha) {
-  const res = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`);
+  const res = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/{SHEET_ID}/values/{RANGE}:append?valueInputOption=USER_ENTERED&key={API_KEY}
+`);
   const data = await res.json();
 
   if (!data.values) {
