@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const telefone = document.getElementById("telefone").value;
 
     // Criando a URL com os parâmetros para o Google Apps Script
-    const url = `https://script.google.com/macros/s/AKfycbwLH2kVPOZY2ztUqU4Jl8gQGp6xRIpF7fkmJ_OvlKYqL56HSPudXTcPco3NMNCvI8jj/exec?action=cadastro&nome=${encodeURIComponent(nome)}&email=${encodeURIComponent(email)}&senha=${encodeURIComponent(senha)}&telefone=${encodeURIComponent(telefone)}`;
+    const url = `https://script.google.com/macros/s/AKfycbxuf6_hkWxmMfE9G7hbuFC3Uo2hZ9R7Z1cmSO-xKQaWl1ecoMr2hQCD3dVXV8KA60j5/exec?action=cadastro&nome=${encodeURIComponent(nome)}&email=${encodeURIComponent(email)}&senha=${encodeURIComponent(senha)}&telefone=${encodeURIComponent(telefone)}`;
 
     // Enviando a requisição GET para o Google Apps Script
     fetch(url)
@@ -27,4 +27,3 @@ document.addEventListener('DOMContentLoaded', function() {
       });
   });
 });
-
