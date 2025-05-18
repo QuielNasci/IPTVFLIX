@@ -12,7 +12,7 @@ const notebook_2_white = document.querySelector("#notebook-2-white");
 const vidro = document.querySelector("#vidro");
 
 const SHEET_ID = "1fqA2MogJLVGv79skRGxiXKwzHDOv-K5b8p1G7DaYpgg";
-const API_KEY = "https://script.google.com/macros/s/AKfycbwADBlj7uB5zaNmRK-4fLRmRzGLCr_P7WYHUG1len0sDgbGCbd27jSPPBOpdT9o6p4/exec";
+const API_KEY = "AKfycbxkhWCGXyhqM3DdutwloZiMEdRUVhJ-SWBB6okanF36P2M_Zr_2fm-vVNyugCH-cWff";
 const SHEET_NAME = "usuarios";
 
 // Faixa onde os dados dos usuários estão
