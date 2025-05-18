@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const telefone = document.getElementById("telefone").value;
 
     // Criando a URL com os parâmetros para o Google Apps Script
-    const url = `https://script.google.com/macros/s/AKfycbyzc89YWRY1WxlMrklX-uIGYvW4XH20cNmb14vlmUk49EzuY3JyQ7WqM1ZeXvflmHod/exec?action=cadastro&nome=${encodeURIComponent(nome)}&email=${encodeURIComponent(email)}&senha=${encodeURIComponent(senha)}&telefone=${encodeURIComponent(telefone)}`;
+    const url = `https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbzGVXx_pfBJxW_LSl0eR3WxsT_WkbZ4thFjwrCHdkhXcEvgnJkDiNU2sQ8LCWCv9ASG/exec/exec?action=cadastro&nome=${encodeURIComponent(nome)}&email=${encodeURIComponent(email)}&senha=${encodeURIComponent(senha)}&telefone=${encodeURIComponent(telefone)}`;
 
     // Enviando a requisição GET para o Google Apps Script
     fetch(url)
