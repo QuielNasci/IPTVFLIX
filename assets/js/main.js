@@ -40,14 +40,10 @@ async function login(email, senha) {
 
 // Função de cadastro
 async function cadastrar(nome, email, senha, telefone) {
-  const endpoint = "https://script.google.com/macros/s/AKfycbzUc9jfx4y6do03EnjX-rB20RE1IVbMnEAI3zbiZRc4U3TgrAJqwF8ehdi50b1vQKV6/exec";
+  const endpoint = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}!A2:D2:append?valueInputOption=USER_ENTERED&key=${API_KEY}`;
   
   const body = {
-    action: "cadastro",  // Adicionando a ação para o Google Apps Script
-    nome: nome,
-    email: email,
-    senha: senha,
-    telefone: telefone  // Enviando também o telefone
+    values: [[nome, email, senha, telefone]],
   };
 
   const res = await fetch(endpoint, {
@@ -65,7 +61,6 @@ async function cadastrar(nome, email, senha, telefone) {
     alert("Erro ao cadastrar. Verifique sua conexão ou permissões.");
   }
 }
-
 
 // Interações com formulários
 document.addEventListener("DOMContentLoaded", () => {
