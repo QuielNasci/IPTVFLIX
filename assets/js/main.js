@@ -51,22 +51,52 @@ async function cadastrar(nome, email, senha, telefone) {
     values: [[nome, email, senha, telefone]],  // Dados que serão inseridos na planilha
   };
 
-  const res = await fetch(endpoint, {
-    method: "POST",
-    body: JSON.stringify(body),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  try {
+    // Exibe o que está sendo enviado
+    console.log("Enviando dados para o Google Sheets:", body);
 
-  if (res.ok) {
-    alert("Cadastro realizado com sucesso!");
-    window.location.href = "login.html";  // Redireciona para a página de login após o cadastro
-  } else {
-    const errorData = await res.json();
-    alert(`Erro ao cadastrar. Mensagem: ${errorData.error.message}`);
+    const res = await fetch(endpoint, {
+      method: "POST",
+      body: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    // Verificar a resposta da requisição
+    if (res.ok) {
+      const result = await res.json();
+      console.log("Cadastro realizado com sucesso:", result);
+      alert("Cadastro realizado com sucesso!");
+      window.location.href = "login.html";  // Redireciona para a página de login após o cadastro
+    } else {
+      // Exibe a mensagem de erro do Google Sheets
+      const errorData = await res.json();
+      console.error("Erro ao cadastrar:", errorData);
+      alert(`Erro ao cadastrar: ${errorData.error.message}`);
+    }
+  } catch (error) {
+    console.error("Erro na requisição:", error);
+    alert("Erro inesperado ao cadastrar. Tente novamente mais tarde.");
   }
 }
+
+// Adicionando a prevenção do comportamento padrão no envio do formulário:
+document.addEventListener("DOMContentLoaded", () => {
+  const cadastroForm = document.querySelector("#cadastroForm");
+
+  if (cadastroForm) {
+    cadastroForm.addEventListener("submit", (e) => {
+      e.preventDefault();  // Previne o comportamento padrão de envio do formulário
+      const nome = cadastroForm.nome.value;
+      const email = cadastroForm.email.value;
+      const senha = cadastroForm.senha.value;
+      const telefone = cadastroForm.telefone.value;
+      
+      cadastrar(nome, email, senha, telefone);
+    });
+  }
+});
 
 
 // Interações com formulários
