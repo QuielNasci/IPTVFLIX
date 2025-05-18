@@ -295,35 +295,31 @@
   <p id="mensagem"></p>
 </section>
 
-<script>
-  // Captura o formulário de cadastro e a área de mensagens
-  const formSignup = document.getElementById('signup-form');
-  const mensagem = document.getElementById('mensagem');
+<section id="auth">
+  <h2>Área do Cliente</h2>
 
-  // Adiciona o evento de envio no formulário de cadastro
-  formSignup.addEventListener('submit', function (e) {
-    e.preventDefault(); // Evita que o formulário seja enviado de forma tradicional
+  <!-- Formulário de Login (exemplo, sem funcionalidade aqui) -->
+  <form id="login-form">
+    <input type="email" id="email" placeholder="E-mail" required />
+    <input type="password" id="password" placeholder="Senha" required />
+    <button type="submit">Entrar</button>
+  </form>
 
-    // Coleta os dados dos campos do formulário
-    const nome = document.getElementById('nome').value;
-    const email = document.getElementById('new-email').value;
-    const senha = document.getElementById('new-password').value;
-    const telefone = document.getElementById('telefone').value;
+  <!-- Formulário de Cadastro -->
+  <form id="signup-form">
+    <input type="text" id="nome" placeholder="Nome" required />
+    <input type="email" id="new-email" placeholder="E-mail" required />
+    <input type="password" id="new-password" placeholder="Senha" required />
+    <input type="tel" id="telefone" placeholder="Telefone" required />
+    <button type="submit">Cadastrar</button>
+  </form>
 
-    // Construa a URL para o Google Apps Script, incluindo os parâmetros necessários
-    const url = `https://script.google.com/macros/s/AKfycbwNpa2A0aoW8zaepdn7KVCdCU2tqB4v9bAY6kIuoufX_nz2pZOUZFYG9f3_2_d0WReM/exec?action=cadastro&nome=${encodeURIComponent(nome)}&email=${encodeURIComponent(email)}&senha=${encodeURIComponent(senha)}&telefone=${encodeURIComponent(telefone)}`;
+  <p id="mensagem"></p>
+</section>
 
-    // Usa o Fetch API para enviar a requisição GET
-    fetch(url)
-      .then(response => response.text())  // Lê a resposta como texto
-      .then(data => {
-        mensagem.textContent = data;  // Exibe a mensagem de sucesso ou erro
-      })
-      .catch(error => {
-        mensagem.textContent = "Erro ao processar a solicitação.";  // Mensagem de erro
-      });
-  });
-</script>
+<!-- Link para o arquivo auth.js -->
+<script src="path/to/auth.js"></script>
+
 
 
 
