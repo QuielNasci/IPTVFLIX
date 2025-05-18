@@ -11,6 +11,89 @@ const notebook_2 = document.querySelector("#notebook-2");
 const notebook_2_white = document.querySelector("#notebook-2-white");
 const vidro = document.querySelector("#vidro");
 
+const SHEET_ID = "1fqA2MogJLVGv79skRGxiXKwzHDOv-K5b8p1G7DaYpgg";
+const API_KEY = "https://script.google.com/macros/s/AKfycbwADBlj7uB5zaNmRK-4fLRmRzGLCr_P7WYHUG1len0sDgbGCbd27jSPPBOpdT9o6p4/exec";
+const SHEET_NAME = "usuarios";
+
+// Faixa onde os dados dos usuários estão
+const RANGE = `${SHEET_NAME}!A2:D`;
+
+// Função de login
+async function login(email, senha) {
+  const res = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`);
+  const data = await res.json();
+
+  if (!data.values) {
+    alert("Erro ao acessar o banco de dados.");
+    return;
+  }
+
+  const user = data.values.find(row => row[1] === email && row[2] === senha);
+  if (user) {
+    localStorage.setItem("userEmail", user[1]);
+    localStorage.setItem("userName", user[0]);
+    window.location.href = "cliente.html";
+  } else {
+    alert("Email ou senha incorretos.");
+  }
+}
+
+// Função de cadastro
+async function cadastrar(nome, email, senha, telefone) {
+  const endpoint = "https://script.google.com/macros/s/AKfycbzUc9jfx4y6do03EnjX-rB20RE1IVbMnEAI3zbiZRc4U3TgrAJqwF8ehdi50b1vQKV6/exec";
+  
+  const body = {
+    action: "cadastro",  // Adicionando a ação para o Google Apps Script
+    nome: nome,
+    email: email,
+    senha: senha,
+    telefone: telefone  // Enviando também o telefone
+  };
+
+  const res = await fetch(endpoint, {
+    method: "POST",
+    body: JSON.stringify(body),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (res.ok) {
+    alert("Cadastro realizado com sucesso!");
+    window.location.href = "login.html";
+  } else {
+    alert("Erro ao cadastrar. Verifique sua conexão ou permissões.");
+  }
+}
+
+
+// Interações com formulários
+document.addEventListener("DOMContentLoaded", () => {
+  const loginForm = document.querySelector("#loginForm");
+  const cadastroForm = document.querySelector("#cadastroForm");
+
+  if (loginForm) {
+    loginForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const email = loginForm.email.value;
+      const senha = loginForm.senha.value;
+      login(email, senha);
+    });
+  }
+
+  if (cadastroForm) {
+    cadastroForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const nome = cadastroForm.nome.value;
+      const email = cadastroForm.email.value;
+      const senha = cadastroForm.senha.value;
+      const telefone = cadastroForm.telefone.value;
+      cadastrar(nome, email, senha, telefone);
+    });
+  }
+});
+
+
 window.addEventListener("load", function begin() {
   projetos(projectsSection);
   const desafioBtn = document.querySelector("#desafio");
